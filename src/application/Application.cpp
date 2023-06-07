@@ -542,4 +542,11 @@ void Application::openArticleLink()
     openCmd += trim(article->url);
 
     system(openCmd.c_str());
+
+	TextConverter tc("", "", 0);
+    string homePath = getenv("HOME");
+    string renderedFilePath = homePath + "/.config/neix/tmp-rendered.txt";
+
+	this->rw.pushContent(std::string("\n\n") + tc._getRenderedText(renderedFilePath));
+	this->rw.show();
 }

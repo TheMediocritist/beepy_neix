@@ -37,6 +37,8 @@ namespace neix
         bool _prepareRawText(const string& rawFilePath, const string text);
         int _renderText(const string& command);
         string _getRenderedText(const string& filePath);
+
+		friend class Application;
     };
 }
 
