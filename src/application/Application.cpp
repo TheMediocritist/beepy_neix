@@ -511,6 +511,10 @@ void Application::openArticle()
     line = "Date:      ";
     line += entry->date;
     this->rw.pushContent(subStrWithEndingDots(line, length));
+
+	line = "URL:       ";
+	line += entry->url;
+    this->rw.pushContent(subStrWithEndingDots(line, length));
     this->rw.pushContent("--------");
 
     if (strlen(entry->description) > 0)
