@@ -33,7 +33,7 @@ Application::Application()
     this->initChoices();
 
     initscr();
-	keypad(stdscr, TRUE);
+    keypad(stdscr, TRUE);
     erase();
     noecho();
     cbreak();
@@ -512,8 +512,8 @@ void Application::openArticle()
     line += entry->date;
     this->rw.pushContent(subStrWithEndingDots(line, length));
 
-	line = "URL:       ";
-	line += entry->url;
+    line = "URL:       ";
+    line += entry->url;
     this->rw.pushContent(subStrWithEndingDots(line, length));
     this->rw.pushContent("--------");
 
@@ -547,10 +547,10 @@ void Application::openArticleLink()
 
     system(openCmd.c_str());
 
-	TextConverter tc("", "", 0);
+    TextConverter tc("", "", 0);
     string homePath = getenv("HOME");
     string renderedFilePath = homePath + "/.config/neix/tmp-rendered.txt";
 
-	this->rw.pushContent(std::string("\n\n") + tc._getRenderedText(renderedFilePath));
-	this->rw.show();
+    this->rw.pushContent(std::string("\n\n") + tc._getRenderedText(renderedFilePath));
+    this->rw.show();
 }
