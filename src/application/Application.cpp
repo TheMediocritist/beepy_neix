@@ -40,6 +40,7 @@ Application::Application()
     curs_set(0);
 
     this->openCommand = "";
+	this->openCommandAlt = "";
     this->reading = false;
     this->createFeedWindow();
     this->createArticleWindow();
@@ -176,9 +177,9 @@ void Application::printControlHints()
 {
     attron(A_REVERSE);
     if (COLS >= 85)
-        mvprintw(LINES - 2, 0, " q/<- : Close | ENTER/-> : Open | o : Open Browser | j/J/PGDN : Down | k/K/PGUP : Up ");
+        mvprintw(LINES - 2, 0, " q: Close | ENTER: Expand | o: Open externally (openCommand config entry) | O: Open externally (openCommandAlt config entry) | j: Scroll article down | k: Scroll article up | J/PGDN: Scroll feed down | K/PGUP: Scroll feed up | r: refit");
     else
-        mvprintw(LINES - 2, 0, "q/←|↵/→|o|j/J/PGDN/↑|k/K/PGUP/↓");
+        mvprintw(LINES - 2, 0, "q | ↵ | o | j | k | J/PGDN | K/PGUP");
 
     attroff(A_REVERSE);
 }
@@ -205,7 +206,7 @@ void Application::show()
         switch (this->c)
         {
             case KEY_R:
-            case KEY_RESIZE:
+            //case KEY_RESIZE:
                 this->resize();
                 break;
 
@@ -283,7 +284,11 @@ void Application::show()
                 this->openArticleLink();
                 break;
 
-            case KEY_RIGHT:
+            case KEY_UPPER_O:
+				this->openArticleLinkAlt();
+				break;
+
+            //case KEY_RIGHT:
             case ENTER:
                 this->aw.hide();
                 this->openArticle();
@@ -293,7 +298,7 @@ void Application::show()
                 this->fw.update();
                 break;
 
-            case KEY_LEFT:
+            //case KEY_LEFT:
             case KEY_Q:
                 if (this->reading)
                 {
@@ -542,8 +547,38 @@ void Application::openArticleLink()
     article->read = 1;
 
     string openCmd = this->openCommand;
-    openCmd += " ";
+    openCmd += " '";
     openCmd += trim(article->url);
+	openCmd += "'";
+
+    system(openCmd.c_str());
+
+    TextConverter tc("", "", 0);
+    string homePath = getenv("HOME");
+    string renderedFilePath = homePath + "/.config/neix/tmp-rendered.txt";
+
+    this->rw.pushContent(std::string("\n\n") + tc._getRenderedText(renderedFilePath));
+    this->rw.show();
+}
+
+/**
+ * Open current article link in alternative external app
+ */
+void Application::openArticleLinkAlt()
+{
+	if (this->openCommandAlt.empty())
+	{
+		return;
+	}
+
+    Feeds *feeds = Feeds::getInstance();
+    struct rssItem *article = feeds->getArticle(this->choice, this->articleChoice);
+    article->read = 1;
+
+    string openCmd = this->openCommandAlt;
+    openCmd += " '";
+    openCmd += trim(article->url);
+	openCmd += "'";
 
     system(openCmd.c_str());
 

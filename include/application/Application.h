@@ -35,6 +35,7 @@ namespace neix
         int decreaseChoice(int new_choice, int count);
 
         string openCommand;
+		string openCommandAlt;
         string renderCommand;
 
     private:
@@ -66,6 +67,7 @@ namespace neix
 
         void openArticle();
         void openArticleLink();
+		void openArticleLinkAlt();
     };
 }
 

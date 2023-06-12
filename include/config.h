@@ -21,6 +21,7 @@
 
 #define KEY_UPPER_J 74
 #define KEY_UPPER_K 75
+#define KEY_UPPER_O 79
 
 const char prefix[] = "\033[0;33m[neix]\033[0m ";
 extern std::string CUSTOM_FEED_CONFIG;
