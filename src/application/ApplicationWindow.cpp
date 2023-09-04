@@ -78,8 +78,8 @@ void ApplicationWindow::_printContent()
         }
         else
         {
-            mvwprintw(this->pad, y, x, "%s", line.c_str());
-        }
+			mvwaddstr(this->pad, y, x, (line + "\n").c_str());
+		}
         y++;
         counter++;
     }
